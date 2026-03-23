@@ -12,4 +12,10 @@ app.get('/filmes', (req, res) => {
     res.status(200).json(filmes);
 });
 
+app.post('/filmes', (req, res) => {
+    const novoFilme = req.body;
+    filmes.push(novoFilme);
+    res.status(201).json(novoFilme);
+});
+
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
