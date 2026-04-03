@@ -1,0 +1,23 @@
+name: ci-pr
+run-name: wokflow ci-pr sendo executado
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  executa-projeto:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Realiza o clone do repositório e muda para a branch correta (checkout)
+        uses: actions/checkout@v5
+
+      - name: instalar o node na versão 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Instalar as dependências de execução
+        run: npm install
+
+      - name: Executa o executa-projeto
+        run: npm start & sleep 5
