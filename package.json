@@ -1,16 +1,32 @@
 {
-  "name": "api",
+  "name": "api-filmes",
   "version": "1.0.0",
-  "description": "",
+  "description": "api de filmes",
+  "keywords": [
+    "api",
+    "filmes"
+  ],
   "license": "ISC",
-  "author": "Joelmir Siqueira",
+  "author": "Joelmir & Jalmir",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch index.js",
-    "start": "node index.js"
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.19.39",
+    "@types/supertest": "^6.0.2",
+    "supertest": "^7.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.4.5",
+    "vitest": "^3.0.0"
   }
 }
