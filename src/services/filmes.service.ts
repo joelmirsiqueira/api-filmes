@@ -26,3 +26,12 @@ export const adicionarFilme = (filme: Filme): Filme => {
     novoFilme.id = filmes.length - 1;
     return novoFilme;
 };
+
+export const deletarFilme = (id: number): void => {
+    const index = filmes.findIndex(filme => filme.id === id);
+    
+    if (index === -1) {
+        throw new Error("Filme não encontrado");
+    }
+    filmes.splice(index, 1);
+};
