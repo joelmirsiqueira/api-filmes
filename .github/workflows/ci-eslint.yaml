@@ -1,0 +1,47 @@
+name: ci-eslint
+run-name: workflow ci-eslint sendo executado
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+jobs:
+  executar-lint:
+    name: Verificação de estilo (ESLint)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Realiza o clone do repositório e muda para a branch correta (checkout)
+        uses: actions/checkout@v5
+
+      - name: Instalar o node na versão 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "npm"
+
+      - name: Instalar dependências de execução
+        run: npm install
+
+      - name: Rodar ESLint
+        run: npx eslint .
+
+  test:
+    name: Testes + Coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Realiza o clone do repositório e muda para a branch correta (checkout)
+        uses: actions/checkout@v5
+
+      - name: Instalar o node na versão 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "npm"
+
+      - name: Instalar dependências de execução
+        run: npm install
+
+      - name: Rodar testes com coverage
+        run: npm run coverage
