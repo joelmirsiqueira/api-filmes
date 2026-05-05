@@ -19,4 +19,15 @@ describe("FilmesService", () => {
         expect(listaDepois).toHaveLength(listaAntes + 1);
         expect(listaDepois[listaDepois.length - 1].titulo).toBe("O Poderoso Chefão");
     });
+
+    it("deve deletar um filme pelo ID corretamente", () => {
+        service.deletarFilme(4);
+        const filmes = service.obterTodosFilmes();
+        expect(filmes).toHaveLength(4); 
+        expect(filmes.find(filme => filme.id === 4)).toBeUndefined();
+    });
+
+    it("deve lançar um erro ao tentar deletar um filme com ID inexistente", () => {
+        expect(() => service.deletarFilme(999)).toThrow("Filme não encontrado");
+    });
 });
