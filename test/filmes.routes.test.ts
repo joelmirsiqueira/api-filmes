@@ -23,4 +23,15 @@ describe("Rotas de Filmes", () => {
             ano: 1972
         }));
     });
+
+    it("deve deletar um filme existente com status 204", async () => {
+        const response = await request(app).delete("/filmes/4");
+        expect(response.status).toBe(204);
+    });
+
+    it("deve retornar 404 ao tentar deletar um filme inexistente", async () => {
+        const response = await request(app).delete("/filmes/999");
+        expect(response.status).toBe(404);
+        expect(response.body).toEqual({ message: "Filme não encontrado" });
+    });
 });
