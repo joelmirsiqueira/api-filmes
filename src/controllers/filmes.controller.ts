@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import * as filmesService from "../services/filmes.service.js";
 
 export const obterFilmes = (req: Request, res: Response): Response => {
