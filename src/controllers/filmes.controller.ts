@@ -10,3 +10,16 @@ export const adicionarFilme = (req: Request, res: Response): Response => {
     const novoFilme = filmesService.adicionarFilme(req.body);
     return res.status(201).json(novoFilme);
 };
+
+export const deletarFilme = (req: Request, res: Response): Response => {
+    try {
+        const id = parseInt(req.params.id);
+        filmesService.deletarFilme(id); 
+        return res.status(204).send();
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(404).json({ message: error.message });
+        }
+        return res.status(404).json({ message: "Filme não encontrado" });
+    }
+};
