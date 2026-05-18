@@ -1,0 +1,60 @@
+name: ci-docker
+run-name: workflow ci-docker sendo executado
+on:
+  push:
+    branches: "**"
+jobs:
+  compilar-projeto:
+    name: Compilar o projeto
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Realiza o clone do repositório e muda para a branch correta (checkout)
+        uses: actions/checkout@v5
+
+      - name: instalar o node na versão 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "npm"
+
+      - name: instalar dependências
+        run: npm install
+
+      - name: Compilar o projeto
+        run: npm run build
+
+  criar-imagem-docker:
+    name: Criar imagem Docker
+    runs-on: ubuntu-latest
+    needs: compilar-projeto
+    
+    steps:
+      - name: Realiza o clone do repositório e muda para a branch correta (checkout)
+        uses: actions/checkout@v5
+
+      - name: Criar imagem Docker
+        run: docker build -t api-filmes-gc2 .
+
+  publicar-imagem-docker:
+    name: Publicar imagem Docker no DockerHub
+    runs-on: ubuntu-latest
+    needs: criar-imagem-docker
+
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Realiza o clone do repositório e muda para a branch correta (checkout)
+        uses: actions/checkout@v5
+
+      - name: Login no DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Build da imagem Docker
+        run: docker build -t api-filmes-gc2 .
+
+      - name: Publicar imagem no DockerHub
+        run: docker push api-filmes-gc2:latest
