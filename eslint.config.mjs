@@ -35,5 +35,11 @@ export default defineConfig([
       ],
     },
   },
+  {
+    files: ["**/index.ts"],
+    rules: {
+      "no-console": "off",
+    },
+  },
   prettierConfig,
 ]);
