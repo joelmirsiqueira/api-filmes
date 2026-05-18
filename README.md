@@ -1,5 +1,7 @@
 # API de Filmes - Trabalho de Gestão de Configuração
 
+[![Docker](https://badgen.net/badge/icon/Docker?icon=docker&label)](https://hub.docker.com/r/joelmirsiqueira/api-filmes-gc2)
+
 Este é um projeto simples de uma API para gerenciar filmes, desenvolvido como parte da disciplina de Gestão de Configuração de Software.
 
 ## 🚀 Começando
