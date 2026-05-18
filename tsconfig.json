@@ -9,7 +9,7 @@
 
     "strict": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
@@ -21,7 +21,6 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
 
-    "sourceMap": true,
     "removeComments": true
   },
   "include": ["src/**/*.ts"],
