@@ -57,4 +57,4 @@ jobs:
         run: docker build -t api-filmes-gc2 .
 
       - name: Publicar imagem no DockerHub
-        run: docker push api-filmes-gc2:latest
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/api-filmes-gc2:latest
