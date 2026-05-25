@@ -37,6 +37,47 @@ Um passo a passo que te diz como ter um ambiente de desenvolvimento rodando:
     ```
     O servidor estará rodando em `http://localhost:3000` (ou na porta que você configurar).
 
+## Infraestrutura com Vagrant
+
+### Requisitos:
+
+- VirtualBox
+- Vagrant
+
+### Passo a Passo:
+**1. Iniciar as máquinas virtuais:**
+
+No terminal da máquina hospedeira execute esse comando na raiz do projeto, ele vai baixar a Box necessária, configurar as redes privadas, sincronizar as pastas e instalar as dependências automaticamente.
+
+
+```bash 
+vagrant up
+```
+
+**2. Verificar Status das VMs:**
+
+Para ter a certeza que ambas as máquinas estão rodando, checar o status delas.
+
+```bash
+vagrant status
+```
+
+**3. Acessar a VM1:**
+
+Entrar na máquina via SSH:
+
+```bash
+vagrant ssh vm1
+```
+
+**4. Acessar a rota GET na VM2:**
+
+Dentro do terminal da VM1, utilize o comando `curl` para disparar uma requisição HTTP para a API de filmes que está rodando na VM2:
+
+```bash
+curl -X GET http://192.168.56.11:3000/filmes
+```
+
 ## 📖 Rotas da API
 
 A API possui as seguintes rotas:
