@@ -1,0 +1,40 @@
+- name: Configurar o nodeJS nos servers
+  hosts: servidores
+  become: true
+
+  tasks:
+    - name: atualizar os pacotes
+      apt:
+        update_cache: yes
+
+    - name: instalar o git
+      apt:
+        name: git
+        state: present
+
+    - name: instalar o docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: criar o diretório
+      file:
+        path: /home/vagrant/api
+        state: directory
+        owner: vagrant
+        group: vagrant
+        mode: 0755
+
+    - name: clonar o repositório
+      git:
+        repo: https://github.com/joelmirsiqueira/api-filmes.git
+        dest: /home/vagrant/api
+        version: main
+        force: true
+      become: false
+
+    - name: executar com docker
+      shell: |
+        cd /home/vagrant/api
+        docker build -t api .
+        docker run -d -p 3000:3000 api
