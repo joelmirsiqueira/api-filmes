@@ -2,7 +2,7 @@
 
 [![Docker](https://badgen.net/badge/icon/Docker?icon=docker&label)](https://hub.docker.com/r/joelmirsiqueira/api-filmes-gc2)
 
-Este é um projeto simples de uma API para gerenciar filmes, desenvolvido como parte da disciplina de Gestão de Configuração de Software.
+Este é um projeto simples de uma API para gerenciar filmes, desenvolvido como parte da disciplina de Gestão de Configuração de Software 2.
 
 ## 🚀 Começando
 
@@ -21,33 +21,38 @@ Um passo a passo que te diz como ter um ambiente de desenvolvimento rodando:
 
 1.  Clone o repositório:
     ```sh
-    git clone <url-do-seu-repositorio>
+    git clone https://github.com/joelmirsiqueira/api-filmes.git
     ```
 2.  Navegue até o diretório da API:
     ```sh
-    cd api
+    cd api-filmes
     ```
 3.  Instale as dependências do projeto:
     ```sh
     npm install
     ```
-4.  Inicie o servidor:
+4.  Faça build do projeto
+    ```
+    npm run build
+    ```
+5.  Inicie o servidor:
     ```sh
     npm start
     ```
     O servidor estará rodando em `http://localhost:3000` (ou na porta que você configurar).
 
-## Infraestrutura com Vagrant
+## Infraestrutura com Vagrant e Ansible
 
 ### Requisitos:
 
 - VirtualBox
 - Vagrant
+- Ansible
 
 ### Passo a Passo:
 **1. Iniciar as máquinas virtuais:**
 
-No terminal da máquina hospedeira execute esse comando na raiz do projeto, ele vai baixar a Box necessária, configurar as redes privadas, sincronizar as pastas e instalar as dependências automaticamente.
+No terminal da máquina hospedeira execute esse comando na pasta `api-filmes/vagrant` do projeto, ele vai baixar a Box necessária, configurar as redes privadas, sincronizar as pastas e instalar as dependências automaticamente.
 
 
 ```bash 
@@ -70,13 +75,40 @@ Entrar na máquina via SSH:
 vagrant ssh vm1
 ```
 
-**4. Acessar a rota GET na VM2:**
+**4. Navegue para a pasta `/vagrant`:**
 
-Dentro do terminal da VM1, utilize o comando `curl` para disparar uma requisição HTTP para a API de filmes que está rodando na VM2:
+Após entrar na VM1, execute navegue para a pasta `/vagrant` com o comando cd:
 
 ```bash
-curl -X GET http://192.168.56.11:3000/filmes
+cd /vagrant
 ```
+
+**5. Execute o Playbook do Ansible:**
+
+Execute o playbook do Ansible:
+
+```bash
+ansible-playbook -i inventory.ini configura-node.yaml
+```
+
+Confirme que quer continuar a conexão (caso seja solicitado) digite: `yes` e precione Enter.
+
+O playbook realiza a configuração do servidor, faz o clone do repositório da aplicação e executa a API utilizando Docker.
+
+**6. Teste da Aplicação:**
+
+Para verificar se a aplicação está funcionando corretamente, execute na VM1:
+
+```bash
+curl http://192.168.56.11:3000/filmes
+```
+
+ou
+
+```bash
+wget -qO- http://192.168.56.11:3000/filmes
+```
+se a configuração foi realizada com sucesso, a API retornará a lista de filmes em formato JSON.
 
 ## 📖 Rotas da API
 
