@@ -26,19 +26,3 @@ stress-ng --cpu 0 --cpu-load 90 --timeout 20s
 ```
 
 Acompanhe o Dashboard do Netdata na aba Alarms (canto superior direito) para ver o estado do alerta mudar de Clear (Verde) para Warning (Amarelo/Vermelho).
-
-
----
-
-### 4. Adicionando as Mudanças ao Git
-
-Por fim, vamos commitar as alterações exatamente nos arquivos solicitados.
-
-```bash
-# Adiciona os arquivos específicos ao stage do Git
-git add vagrant/data/configurar-monitoramento.yml
-git add vagrant/Vagrantfile
-git add vagrant/README.md
-
-# Realiza o commit na branch monitoring
-git commit -m "feat: adiciona instalacao do netdata, alerta de cpu e stress-ng"
