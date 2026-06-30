@@ -1,0 +1,86 @@
+- name: Instalação da ferramenta do netdata
+  hosts: servidores
+  become: true
+
+  tasks:
+    - name: atualizar os pacotes
+      apt:
+        update_cache: yes
+
+    - name: instalar o netdata
+      apt:
+        name: netdata
+        state: present
+
+    - name: garantir que o netdata esteja rodando e habilitado
+      service:
+        name: netdata
+        state: started
+        enabled: true
+
+- name: Configuração alertas no netdata
+  hosts: servidores
+  become: true
+
+  tasks:
+    - name: instalar suporte a envio de email (mailutils)
+      apt:
+        name: mailutils
+        state: present
+
+    - name: criar alerta de cpu a 80%
+      blockinfile:
+        path: /etc/netdata/health.d/cpu_alerta.conf
+        create: yes
+        block: |
+          alarm: cpu_utilization_80
+          on: system.cpu
+          lookup: average -10s of user,system,softirq,irq
+          every: 10s
+          warn: $this > 80
+          delay: down 1m
+          info: Utilização da CPU acima de 80%
+
+    - name: copiar template original do health_alarm_notify.conf
+      command: cp /usr/lib/netdata/conf.d/health_alarm_notify.conf /etc/netdata/health_alarm_notify.conf
+      args:
+        creates: /etc/netdata/health_alarm_notify.conf
+
+    - name: configurar Netdata para acesso externo
+      blockinfile:
+        path: /etc/netdata/netdata.conf
+        create: yes
+        block: |
+          [web]
+          bind to = 0.0.0.0
+
+    - name: configurar envio de email no Netdata
+      blockinfile:
+        path: /etc/netdata/health_alarm_notify.conf
+        block: |
+          SEND_EMAIL="YES"
+          DEFAULT_RECIPIENT_EMAIL=jss11@discente.ifpe.edu.br
+          SEND_EMAIL_CMD="/usr/bin/mail"
+
+    - name: reiniciar o netdata
+      service:
+        name: netdata
+        state: restarted
+
+
+- name: Testar alertas no netdata
+  hosts: servidores
+  become: true
+
+  tasks:
+    - name: atualizar os pacotes
+      apt:
+        update_cache: yes
+
+    - name: instalar stress-ng
+      apt:
+        name: stress-ng
+        state: present
+
+    - name: executar stress-ng
+      shell: stress-ng --cpu 4 --cpu-load 85 --timeout 15s
